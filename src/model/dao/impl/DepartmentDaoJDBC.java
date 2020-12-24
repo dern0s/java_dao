@@ -22,7 +22,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	}
 	
 	@Override
-	public void insert(Department dep) {
+	public void insert(Department obj) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
@@ -31,7 +31,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 					+ "VALUES "
 					+ "(?)", Statement.RETURN_GENERATED_KEYS);
 			
-			st.setString(1, dep.getName());
+			st.setString(1, obj.getName());
 			
 			
 			int rowsAffected = st.executeUpdate();
@@ -39,7 +39,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
-					dep.setId(rs.getInt(1));
+					obj.setId(rs.getInt(1));
 				}
 				DB.closeResultSet(rs);
 			}
@@ -57,13 +57,49 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public void update(Department obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE department "
+					+ "SET Name = ? "
+					+ "WHERE Id = ?");
+			
+			st.setString(1, obj.getName());
+						
+			st.setInt(2, obj.getId());
+			
+			st.executeUpdate();
+			
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+			
+			st.setInt(1, id);
+			
+			int rows = st.executeUpdate();
+			
+			if (rows == 0) {
+				System.out.println("Id doesn't exist. Nothing done.");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
@@ -81,9 +117,9 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Department dep = instantiateDepartment(rs);
+				Department obj = instantiateDepartment(rs);
 				
-				return dep;
+				return obj;
 			}
 			return null;
 		} catch (SQLException e) {
