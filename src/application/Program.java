@@ -62,9 +62,11 @@ public class Program {
 		
 		sc.close();*/
 		
+		System.out.println("******\nNow for department tests******");
+		
 		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 		
-		System.out.println("---- Test 01 for Department => findAll ---- ");
+		System.out.println("\n=== Test 01 for Department => findAll === ");
 		
 		List<Department> depList = new ArrayList<>();
 		
@@ -72,7 +74,21 @@ public class Program {
 		
 		depList.forEach(x -> System.out.println(x));
 		
+		System.out.println("\n===Test 02 for Department => findById ===");
 		
+		Department depFound = departmentDao.findById(2);
+		
+		System.out.println("Department with id 2 is: " + depFound);
+		
+		System.out.println("\n===Test 03 for Department => insert department with name Furniture ===");
+		
+		Department newDep = new Department(null, "Furniture");
+		
+		System.out.println("newDep before insert: " + newDep);
+		
+		departmentDao.insert(newDep);
+		
+		System.out.println("newDep after insert: " + newDep);
 		
 	}
 
