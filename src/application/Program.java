@@ -1,19 +1,17 @@
 package application;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import model.dao.DaoFactory;
-import model.dao.SellerDao;
+import model.dao.DepartmentDao;
 import model.entities.Department;
-import model.entities.Seller;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
-		Scanner sc = new Scanner(System.in);
+		/*Scanner sc = new Scanner(System.in);
 		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
@@ -62,7 +60,19 @@ public class Program {
 		
 		System.out.println("Deleted seller with id " + id);
 		
-		sc.close();
+		sc.close();*/
+		
+		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+		
+		System.out.println("---- Test 01 for Department => findAll ---- ");
+		
+		List<Department> depList = new ArrayList<>();
+		
+		depList = departmentDao.findAll();
+		
+		depList.forEach(x -> System.out.println(x));
+		
+		
 		
 	}
 

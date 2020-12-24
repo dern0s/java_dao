@@ -65,8 +65,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 						
 			while (rs.next()) {
 				
-				Department dep = new Department();
-				//TODO: implementar o resto e retornar uma lista de departments
+				list.add(instantiateDepartment(rs));
 			}
 			return list;
 		} catch (SQLException e) {
@@ -77,6 +76,13 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			DB.closeResultSet(rs);
 		}
 	}
+	
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("Id"));
+		dep.setName(rs.getString("Name"));
+		return dep;
+		
 	}
 
 }
